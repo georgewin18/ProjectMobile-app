@@ -1,9 +1,9 @@
 import 'dart:async';
-
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:project_mobile/pages/home_page.dart';
+import 'package:project_mobile/pages/main_page.dart';
 import 'package:project_mobile/pages/reset_password_page.dart';
 import 'package:project_mobile/services/supabase_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -40,16 +40,12 @@ class _MyAppState extends State<MyApp> {
   void _handleIncomingLinks() async {
     _appLinks = AppLinks();
 
-    // Untuk saat app sudah jalan
     _appLinks.uriLinkStream.listen((Uri? uri) {
-      // debugPrint("STREAM received uri: $uri");
       _handleUri(uri);
     });
 
-    // Untuk saat app dibuka dari background atau mati
     final initialUri = await _appLinks.getInitialAppLink();
     if (initialUri != null) {
-      // debugPrint("INITIAL received uri: $initialUri");
       _handleUri(initialUri);
     }
   }
@@ -86,11 +82,12 @@ class _MyAppState extends State<MyApp> {
 
     return MaterialApp(
       navigatorKey: widget.navigatorKey,
-      title: 'Supabase Auth',
+      title: 'Finance App',
       theme: ThemeData(primarySwatch: Colors.blue),
-      initialRoute: session != null ? '/home' : '/login',
+      initialRoute: session != null ? '/main' : '/login',
       routes: {
         '/login': (context) => LoginPage(),
+        '/main': (context) => MainPage(),
         '/home': (context) => HomePage(),
         '/register': (context) => RegisterPage(),
         '/transactions': (context) => TransactionPage(),
