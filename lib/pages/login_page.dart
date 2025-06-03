@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project_mobile/pages/home_page.dart';
+import 'package:project_mobile/pages/main_page.dart';
 import 'package:project_mobile/pages/register_page.dart';
 import 'package:project_mobile/services/supabase_service.dart';
 
@@ -29,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
       if (response.user != null) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => HomePage()),
+          MaterialPageRoute(builder: (_) => MainPage()),
         );
       }
     } catch (e) {
