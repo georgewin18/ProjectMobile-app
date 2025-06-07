@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project_mobile/components/floating_bottom_bar.dart';
 import 'package:project_mobile/pages/add_expense_page.dart';
 import 'package:project_mobile/pages/add_income_page.dart';
+import 'package:project_mobile/pages/analytic_page.dart';
 import 'home_page.dart';
 
 class MainPage extends StatefulWidget {
@@ -18,7 +19,7 @@ class _MainPageState extends State<MainPage> {
 
   final List<Widget> _pages = [
     HomePage(key: UniqueKey()),
-    Center(child: Text('Analytics Page')),
+    AnalyticPage(),
     Center(child: Text('')),
     Center(child: Text('Charts Page')),
     Center(child: Text('Profile Page')),
