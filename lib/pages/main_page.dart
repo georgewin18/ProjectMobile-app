@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:project_mobile/components/floating_bottom_bar.dart';
 import 'package:project_mobile/pages/add_expense_page.dart';
 import 'package:project_mobile/pages/add_income_page.dart';
+import 'package:project_mobile/pages/budget_page.dart';
 import 'home_page.dart';
 
 class MainPage extends StatefulWidget {
@@ -20,7 +22,7 @@ class _MainPageState extends State<MainPage> {
     HomePage(key: UniqueKey()),
     Center(child: Text('Analytics Page')),
     Center(child: Text('')),
-    Center(child: Text('Charts Page')),
+    BudgetPage(),
     Center(child: Text('Profile Page')),
   ];
 
@@ -45,6 +47,15 @@ class _MainPageState extends State<MainPage> {
     );
 
     if (result == true && _selectedIndex == 0) {
+      Fluttertoast.showToast(
+        msg: "Transaction saved successfully",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+
       setState(() {
         _pages[0] = HomePage(key: UniqueKey());
       });
@@ -60,6 +71,15 @@ class _MainPageState extends State<MainPage> {
     );
 
     if (result == true && _selectedIndex == 0) {
+      Fluttertoast.showToast(
+        msg: "Transaction saved successfully",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+
       setState(() {
         _pages[0] = HomePage(key: UniqueKey());
       });
