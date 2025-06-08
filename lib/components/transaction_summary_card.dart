@@ -72,7 +72,7 @@ class TransactionSummaryCard extends StatelessWidget {
                 Text(
                   amount,
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 14,
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),

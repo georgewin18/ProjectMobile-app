@@ -1,19 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:project_mobile/components/alert_slider_thumb.dart';
+import 'package:project_mobile/components/alert_slider_track.dart';
 import 'package:project_mobile/services/api_service.dart';
 
-class AddExpensePage extends StatefulWidget {
-  const AddExpensePage({super.key});
+class CreateBudgetPage extends StatefulWidget {
+  final DateTime selectedDate;
+
+  const CreateBudgetPage({
+    super.key,
+    required this.selectedDate
+  });
 
   @override
-  State<AddExpensePage> createState() => _AddExpensePageState();
+  State<CreateBudgetPage> createState() => _CreateBudgetPageState();
 }
 
-class _AddExpensePageState extends State<AddExpensePage> {
+class _CreateBudgetPageState extends State<CreateBudgetPage> {
   final TextEditingController _amountController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
   final NumberFormat _formatter = NumberFormat.decimalPattern();
   String? _selectedCategory;
+
+  bool _toggleActive = false;
+  double _alertValue = 50.0;
 
   final List<String> _categories = [
     'Transportation',
@@ -21,36 +31,37 @@ class _AddExpensePageState extends State<AddExpensePage> {
     'Subscription',
     'Insurance',
     'Groceries',
-    'Others',
   ];
 
   @override
   Widget build(BuildContext context) {
     bool amountEdited = false;
 
-    return Scaffold(
-      backgroundColor: Colors.red[400],
+    final isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
+    final initialHeight = MediaQuery.of(context).size.height * 0.28;
+    double topSpaceHeight = _toggleActive ? initialHeight : initialHeight + 37;
 
-      appBar: AppBar(
-        backgroundColor: Colors.red[400],
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text('Expense', style: TextStyle(color: Colors.white)),
-        centerTitle: true,
-      ),
+    return Scaffold(
+      backgroundColor: Colors.blue,
 
       body: Column(
         children: [
-          SizedBox(height: 32),
+          SizedBox(height: 48),
+
+          _appbar(),
+
+          AnimatedContainer(
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+            height: isKeyboardVisible ? topSpaceHeight - 240 : topSpaceHeight,
+          ),
 
           Padding(
             padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'How much?',
+                'How much do you want to spend?',
                 style: TextStyle(color: Colors.white, fontSize: 18),
               ),
             ),
@@ -65,9 +76,9 @@ class _AddExpensePageState extends State<AddExpensePage> {
               keyboardType: TextInputType.number,
               textAlign: TextAlign.start,
               style: TextStyle(
-                color: Colors.white,
-                fontSize: 36,
-                fontWeight: FontWeight.bold
+                  color: Colors.white,
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold
               ),
 
               onChanged: (value) {
@@ -96,9 +107,9 @@ class _AddExpensePageState extends State<AddExpensePage> {
                 border: InputBorder.none,
                 prefixText: 'Rp ',
                 prefixStyle: TextStyle(
-                  color: Colors.white,
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold
+                    color: Colors.white,
+                    fontSize: 36,
+                    fontWeight: FontWeight.bold
                 ),
               ),
             ),
@@ -125,30 +136,30 @@ class _AddExpensePageState extends State<AddExpensePage> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
                         borderSide: BorderSide(
-                          color: Colors.grey.withAlpha(40),
-                          width: 1
+                            color: Colors.grey.withAlpha(40),
+                            width: 1
                         ),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
                         borderSide: BorderSide(
-                          color: Colors.grey.withAlpha(40),
-                          width: 1
+                            color: Colors.grey.withAlpha(40),
+                            width: 1
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
                         borderSide: BorderSide(
-                          color: Colors.purple,
-                          width: 1.5
+                            color: Colors.purple,
+                            width: 1.5
                         ),
                       )
                     ),
                     value: _selectedCategory,
                     items: _categories
-                      .map((cat) =>
+                        .map((cat) =>
                         DropdownMenuItem(value: cat, child: Text(cat)))
-                      .toList(),
+                        .toList(),
                     onChanged: (value) => setState(() {
                       _selectedCategory = value;
                     }),
@@ -156,37 +167,73 @@ class _AddExpensePageState extends State<AddExpensePage> {
 
                   SizedBox(height: 16),
 
-                  TextField(
-                    controller: _descriptionController,
-                    decoration: InputDecoration(
-                      labelText: 'Description',
-                      filled: true,
-                      fillColor: Colors.grey.withAlpha(5),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: BorderSide(
-                          color: Colors.grey.withAlpha(40),
-                          width: 1
-                        ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Receive Alert',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16
+                            ),
+                          ),
+                          Text(
+                            'Receive alert when it reaches some point',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey
+                            ),
+                          )
+                        ],
                       ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: BorderSide(
-                          color: Colors.grey.withAlpha(40),
-                          width: 1
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: BorderSide(
-                          color: Colors.purple,
-                          width: 1.5
-                        ),
-                      ),
-                    ),
+
+                      Switch(
+                        value: _toggleActive,
+                        onChanged: (bool value) {
+                          setState(() {
+                            _toggleActive = value;
+                          });
+                        },
+                        activeColor: Colors.blue,
+                      )
+                    ],
                   ),
 
-                  Spacer(),
+                  if (_toggleActive)
+                    SliderTheme(
+                      data: SliderTheme.of(context).copyWith(
+                        trackHeight: 12,
+                        activeTrackColor: Colors.deepPurpleAccent,
+                        inactiveTrackColor: Colors.grey.shade300,
+                        trackShape: AlertSliderTrack(),
+
+                        thumbShape: AlertSliderThumb(),
+                        thumbColor: Colors.deepPurpleAccent,
+                        disabledThumbColor: Colors.white,
+
+                        overlayColor: Colors.deepPurpleAccent.withAlpha(32),
+                        overlayShape: RoundSliderOverlayShape(overlayRadius: 28),
+
+                        tickMarkShape: SliderTickMarkShape.noTickMark,
+                      ),
+                      child: Slider(
+                        value: _alertValue,
+                        min: 0,
+                        max: 100,
+                        divisions: 10,
+                        onChanged: (double value) {
+                          setState(() {
+                            _alertValue = value;
+                          });
+                        },
+                      ),
+                    ),
+
+                  SizedBox(height: 16),
 
                   SizedBox(
                     width: double.infinity,
@@ -201,10 +248,9 @@ class _AddExpensePageState extends State<AddExpensePage> {
                       onPressed: () async {
                         final rawAmount = _amountController.text.replaceAll(',', '');
                         final amount = double.tryParse(rawAmount) ?? 0;
-                        final description = _descriptionController.text;
                         final selectedCategoryIndex = _categories.indexOf(_selectedCategory ?? '');
 
-                        if (amount <= 0 || _selectedCategory == null || description.isEmpty) {
+                        if (amount <= 0 || _selectedCategory == null) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text('Please fill all fields'),
@@ -217,18 +263,27 @@ class _AddExpensePageState extends State<AddExpensePage> {
                         final categoryId = (selectedCategoryIndex + 1).toString();
 
                         try {
-                          await ApiService.createTransaction(
-                            description: description,
+                          await ApiService.createBudget(
+                            selectedDate: widget.selectedDate,
                             amount: amount,
                             categoryId: categoryId,
-                            date: DateTime.now()
+                            alertValue: _toggleActive ? _alertValue : null
+                          );
+
+                          Fluttertoast.showToast(
+                            msg: "Budget Created",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.BOTTOM,
+                            backgroundColor: Colors.green,
+                            textColor: Colors.white,
+                            fontSize: 16.0,
                           );
 
                           Navigator.pop(context, true);
                         } catch (e) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text('Failed to save transaction!'),
+                              content: Text('Failed to create budget!'),
                               backgroundColor: Colors.red,
                             ),
                           );
@@ -237,10 +292,10 @@ class _AddExpensePageState extends State<AddExpensePage> {
 
                         debugPrint('AMOUNT: $amount');
                         debugPrint('CATEGORY_ID: $categoryId');
-                        debugPrint('DESCRIPTION: $description');
+                        debugPrint('ALERT_VALUE: ${_toggleActive ? _alertValue : null}');
                       },
                       child: Text(
-                        'Save',
+                        'Create',
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.white,
@@ -248,11 +303,43 @@ class _AddExpensePageState extends State<AddExpensePage> {
                         ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
           )
+        ],
+      ),
+    );
+  }
+
+  Widget _appbar() {
+    return Container(
+      height: 84,
+      padding: EdgeInsets.symmetric(vertical: 16 , horizontal: 24),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: IconButton(
+              icon: Icon(Icons.chevron_left, color: Colors.white),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ),
+
+          Center(
+            child: Text(
+              "Create Budget",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 24
+              ),
+            ),
+          ),
         ],
       ),
     );

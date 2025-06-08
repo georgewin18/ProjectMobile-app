@@ -222,14 +222,13 @@ class _AddIncomePageState extends State<AddIncomePage> {
                               date: DateTime.now()
                           );
 
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Transaction saved successfully')),
-                          );
-
                           Navigator.pop(context, true);
                         } catch (e) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Failed to save transaction!')),
+                            SnackBar(
+                              content: Text('Failed to save transaction!'),
+                              backgroundColor: Colors.red,
+                            ),
                           );
                           debugPrint('ERROR: $e');
                         }

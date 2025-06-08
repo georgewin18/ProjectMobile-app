@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final user = SupabaseService.client.auth.currentUser;
-    // debugPrint('TOKEN: ${SupabaseService.client.auth.currentSession?.accessToken}');
+    debugPrint('TOKEN: ${SupabaseService.client.auth.currentSession?.accessToken}');
 
     return Scaffold(
       appBar: AppBar(

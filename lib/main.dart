@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:project_mobile/pages/home_page.dart';
 import 'package:project_mobile/pages/main_page.dart';
 import 'package:project_mobile/pages/reset_password_page.dart';
@@ -14,6 +15,7 @@ import 'package:project_mobile/pages/transaction_page.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await initializeDateFormatting('id_ID', null);
   await dotenv.load();
   await SupabaseService.init();
 
