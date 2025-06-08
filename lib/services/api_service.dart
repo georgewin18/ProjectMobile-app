@@ -51,4 +51,52 @@ class ApiService {
       throw Exception('Failed to create transaction');
     }
   }
+
+  static Future<List<dynamic>> getBudgets() async {
+    final token = await _getToken();
+
+    final response = await http.get(
+      Uri.parse('$baseUrl/budgets'),
+      headers: {'Authorization': 'Bearer $token'},
+    );
+
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load transactions');
+    }
+  }
+
+  static Future<void> createBudget({
+    required DateTime selectedDate,
+    required double amount,
+    required String categoryId,
+    double? alertValue,
+  }) async {
+    final token = await _getToken();
+
+    final date = selectedDate;
+    final startDate = DateTime(date.year, date.month, 1);
+    final endDate = DateTime(date.year, date.month + 1, 1);
+
+    final response = await http.post(
+      Uri.parse('$baseUrl/budgets'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({
+        'category_id': categoryId,
+        'amount': amount,
+        'alert_value': alertValue,
+        'used_amount': 0,
+        'start_date': startDate.toIso8601String(),
+        'end_date': endDate.toIso8601String(),
+      }),
+    );
+
+    if (response.statusCode != 201) {
+      throw Exception('Failed to create budget');
+    }
+  }
 }
