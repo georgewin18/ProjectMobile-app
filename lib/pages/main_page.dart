@@ -4,6 +4,7 @@ import 'package:project_mobile/components/floating_bottom_bar.dart';
 import 'package:project_mobile/pages/add_expense_page.dart';
 import 'package:project_mobile/pages/add_income_page.dart';
 import 'package:project_mobile/pages/budget_page.dart';
+import 'package:project_mobile/pages/chart_page.dart';
 import 'home_page.dart';
 
 class MainPage extends StatefulWidget {
@@ -13,14 +14,13 @@ class MainPage extends StatefulWidget {
   State<MainPage> createState() => _MainPageState();
 }
 
-
 class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
   bool _isFabExpanded = false;
 
   final List<Widget> _pages = [
     HomePage(key: UniqueKey()),
-    Center(child: Text('Analytics Page')),
+    AnalyticsPage(), 
     Center(child: Text('')),
     BudgetPage(),
     Center(child: Text('Profile Page')),
@@ -46,7 +46,7 @@ class _MainPageState extends State<MainPage> {
       MaterialPageRoute(builder: (_) => AddExpensePage())
     );
 
-    if (result == true && _selectedIndex == 0) {
+    if (result == true && (_selectedIndex == 0 || _selectedIndex == 1)) {
       Fluttertoast.showToast(
         msg: "Transaction saved successfully",
         toastLength: Toast.LENGTH_LONG,
@@ -56,8 +56,10 @@ class _MainPageState extends State<MainPage> {
         fontSize: 16.0,
       );
 
+      // Refresh both HomePage and AnalyticsPage
       setState(() {
         _pages[0] = HomePage(key: UniqueKey());
+        _pages[1] = AnalyticsPage();
       });
     }
   }
@@ -70,7 +72,7 @@ class _MainPageState extends State<MainPage> {
         MaterialPageRoute(builder: (_) => AddIncomePage())
     );
 
-    if (result == true && _selectedIndex == 0) {
+    if (result == true && (_selectedIndex == 0 || _selectedIndex == 1)) {
       Fluttertoast.showToast(
         msg: "Transaction saved successfully",
         toastLength: Toast.LENGTH_LONG,
@@ -80,8 +82,10 @@ class _MainPageState extends State<MainPage> {
         fontSize: 16.0,
       );
 
+      // Refresh both HomePage and AnalyticsPage
       setState(() {
         _pages[0] = HomePage(key: UniqueKey());
+        _pages[1] = AnalyticsPage();
       });
     }
   }
