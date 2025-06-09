@@ -16,7 +16,6 @@ class _ChartPageState extends State<ChartPage> with SingleTickerProviderStateMix
   List<Transaction> transactions = [];
   bool isLoading = true;
   
-  // Selected month and year for filtering
   DateTime selectedDate = DateTime.now();
   
   @override
@@ -49,7 +48,6 @@ class _ChartPageState extends State<ChartPage> with SingleTickerProviderStateMix
     }
   }
 
-  // Get filtered transactions for selected month
   List<Transaction> _getFilteredTransactions(bool isIncome) {
     return transactions.where((tx) {
       final isCorrectType = isIncome ? tx.categoryId > 6 : tx.categoryId <= 6;
@@ -59,7 +57,6 @@ class _ChartPageState extends State<ChartPage> with SingleTickerProviderStateMix
     }).toList()..sort((a, b) => b.transactionDate.compareTo(a.transactionDate));
   }
 
-  // Get daily income data for the selected month
   List<FlSpot> _getDailyIncomeData() {
     final daysInMonth = DateTime(selectedDate.year, selectedDate.month + 1, 0).day;
     
@@ -81,7 +78,6 @@ class _ChartPageState extends State<ChartPage> with SingleTickerProviderStateMix
         .toList();
   }
 
-  // Get expense data by category for pie chart
   List<PieChartSectionData> _getExpenseCategoryData() {
     final expenseTransactions = _getFilteredTransactions(false);
     
@@ -91,12 +87,12 @@ class _ChartPageState extends State<ChartPage> with SingleTickerProviderStateMix
     }
     
     final categoryColors = [
-      const Color(0xFFFF6B6B), // Red
-      const Color(0xFF4ECDC4), // Teal
-      const Color(0xFF45B7D1), // Blue
-      const Color(0xFF96CEB4), // Green
-      const Color(0xFFFFA07A), // Orange
-      const Color(0xFFDDA0DD), // Purple
+      const Color(0xFFFF6B6B), 
+      const Color(0xFF4ECDC4), 
+      const Color(0xFF45B7D1), 
+      const Color(0xFF96CEB4), 
+      const Color(0xFFFFA07A), 
+      const Color(0xFFDDA0DD), 
     ];
     
     double totalExpenses = categoryExpenses.values.fold(0, (sum, amount) => sum + amount);
@@ -204,7 +200,7 @@ class _ChartPageState extends State<ChartPage> with SingleTickerProviderStateMix
                     children: [
                       // Total Amount
                       Text(
-                        '$totalExpenses',
+                        'Rp $totalExpenses',
                         style: const TextStyle(
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
@@ -290,7 +286,7 @@ class _ChartPageState extends State<ChartPage> with SingleTickerProviderStateMix
               children: [
                 // Total Amount
                 Text(
-                  '$totalIncome',
+                  'Rp $totalIncome',
                   style: const TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
@@ -470,7 +466,7 @@ class _ChartPageState extends State<ChartPage> with SingleTickerProviderStateMix
                   ),
                 ),
                 Text(
-                  '- ${amount}',
+                  '- Rp $amount',
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -545,7 +541,7 @@ class _ChartPageState extends State<ChartPage> with SingleTickerProviderStateMix
             ),
           ),
           Text(
-            '${isIncome ? '+' : '-'} ${transaction.amount}',
+            '${isIncome ? '+' : '-'} Rp ${transaction.amount}',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
