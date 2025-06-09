@@ -3,8 +3,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:project_mobile/components/floating_bottom_bar.dart';
 import 'package:project_mobile/pages/add_expense_page.dart';
 import 'package:project_mobile/pages/add_income_page.dart';
+import 'package:project_mobile/pages/analytic_page.dart';
 import 'package:project_mobile/pages/budget_page.dart';
-import 'package:project_mobile/pages/chart_page.dart';
 import 'package:project_mobile/pages/profile_page.dart';
 import 'home_page.dart';
 
@@ -21,7 +21,7 @@ class _MainPageState extends State<MainPage> {
 
   final List<Widget> _pages = [
     HomePage(key: UniqueKey()),
-    AnalyticsPage(), 
+    AnalyticPage(),
     Center(child: Text('')),
     BudgetPage(),
     ProfilePage(),
@@ -60,7 +60,7 @@ class _MainPageState extends State<MainPage> {
       // Refresh both HomePage and AnalyticsPage
       setState(() {
         _pages[0] = HomePage(key: UniqueKey());
-        _pages[1] = AnalyticsPage();
+        _pages[1] = AnalyticPage();
       });
     }
   }
@@ -86,7 +86,7 @@ class _MainPageState extends State<MainPage> {
       // Refresh both HomePage and AnalyticsPage
       setState(() {
         _pages[0] = HomePage(key: UniqueKey());
-        _pages[1] = AnalyticsPage();
+        _pages[1] = AnalyticPage();
       });
     }
   }
