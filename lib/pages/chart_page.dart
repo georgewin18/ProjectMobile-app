@@ -4,14 +4,14 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:project_mobile/models/transaction.dart';
 import 'package:project_mobile/services/api_service.dart';
 
-class AnalyticsPage extends StatefulWidget {
-  const AnalyticsPage({super.key});
+class ChartPage extends StatefulWidget {
+  const ChartPage({super.key});
 
   @override
-  State<AnalyticsPage> createState() => _AnalyticsPageState();
+  State<ChartPage> createState() => _ChartPageState();
 }
 
-class _AnalyticsPageState extends State<AnalyticsPage> with SingleTickerProviderStateMixin {
+class _ChartPageState extends State<ChartPage> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   List<Transaction> transactions = [];
   bool isLoading = true;
