@@ -62,11 +62,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final user = SupabaseService.client.auth.currentUser;
+    final String userName = user?.userMetadata?['name'] ?? 'Guest';
     debugPrint('TOKEN: ${SupabaseService.client.auth.currentSession?.accessToken}');
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Hi, ${user!.email}!'),
+        title: Text('Hi, $userName!'),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
