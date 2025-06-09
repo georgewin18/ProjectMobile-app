@@ -4,6 +4,7 @@ import 'package:project_mobile/components/floating_bottom_bar.dart';
 import 'package:project_mobile/pages/add_expense_page.dart';
 import 'package:project_mobile/pages/add_income_page.dart';
 import 'package:project_mobile/pages/budget_page.dart';
+import 'package:project_mobile/pages/profile_page.dart';
 import 'home_page.dart';
 
 class MainPage extends StatefulWidget {
@@ -23,7 +24,7 @@ class _MainPageState extends State<MainPage> {
     Center(child: Text('Analytics Page')),
     Center(child: Text('')),
     BudgetPage(),
-    Center(child: Text('Profile Page')),
+    ProfilePage(),
   ];
 
   void _onItemTapped(int index) {
