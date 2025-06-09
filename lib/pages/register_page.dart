@@ -9,6 +9,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final nameController = TextEditingController();
   final supabase = SupabaseService.client;
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
@@ -22,6 +23,9 @@ class _RegisterPageState extends State<RegisterPage> {
       final response = await supabase.auth.signUp(
         email: emailController.text.trim(),
         password: passwordController.text,
+        data: {
+          'name': nameController.text.trim(),
+        }
       );
       if (response.user != null) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -78,7 +82,38 @@ class _RegisterPageState extends State<RegisterPage> {
                   )
                 ),
                 SizedBox(height: 50),
-                
+
+                // Name Field
+                TextFormField(
+                  controller: nameController,
+                  decoration: InputDecoration(
+                    hintText: 'Nama',
+                    hintStyle: TextStyle(color: Colors.grey[400]),
+                    filled: true,
+                    fillColor: Colors.grey[50],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey[200]!),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey[200]!),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Color(0xFF66A3FE), width: 2),
+                    ),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Nama tidak boleh kosong';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 16),
+
                 // Email Field
                 TextFormField(
                   controller: emailController,
