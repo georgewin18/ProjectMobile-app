@@ -19,8 +19,6 @@ class _ChartPageState extends State<ChartPage> with SingleTickerProviderStateMix
   // Selected month and year for filtering
   DateTime selectedDate = DateTime.now();
   
-  final numberFormat = NumberFormat.currency(symbol: '\$', decimalDigits: 0);
-
   @override
   void initState() {
     super.initState();
@@ -206,7 +204,7 @@ class _ChartPageState extends State<ChartPage> with SingleTickerProviderStateMix
                     children: [
                       // Total Amount
                       Text(
-                        numberFormat.format(totalExpenses),
+                        '$totalExpenses',
                         style: const TextStyle(
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
@@ -292,7 +290,7 @@ class _ChartPageState extends State<ChartPage> with SingleTickerProviderStateMix
               children: [
                 // Total Amount
                 Text(
-                  numberFormat.format(totalIncome),
+                  '$totalIncome',
                   style: const TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
@@ -472,7 +470,7 @@ class _ChartPageState extends State<ChartPage> with SingleTickerProviderStateMix
                   ),
                 ),
                 Text(
-                  '- ${numberFormat.format(amount)}',
+                  '- ${amount}',
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -547,7 +545,7 @@ class _ChartPageState extends State<ChartPage> with SingleTickerProviderStateMix
             ),
           ),
           Text(
-            '${isIncome ? '+' : '-'} ${numberFormat.format(transaction.amount)}',
+            '${isIncome ? '+' : '-'} ${transaction.amount}',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
