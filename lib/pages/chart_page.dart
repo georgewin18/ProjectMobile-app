@@ -522,16 +522,16 @@ class _ChartPageState extends State<ChartPage> with SingleTickerProviderStateMix
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  transaction.description,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
                 const SizedBox(height: 4),
                 Text(
                   '${categoryNames[transaction.categoryId] ?? 'Unknown'} • ${DateFormat('MMM dd').format(transaction.transactionDate)}',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Text(
+                  transaction.description,
                   style: TextStyle(
                     fontSize: 12,
                     color: Colors.grey[600],
