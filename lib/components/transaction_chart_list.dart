@@ -148,7 +148,7 @@ class TransactionsListChart extends StatelessWidget {
             ),
           ),
           Text(
-            '${isIncome ? '+' : '-'} Rp ${transaction.amount}',
+            '${isIncome ? '+' : '-'} Rp ${NumberFormat.decimalPattern().format(transaction.amount)}',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
