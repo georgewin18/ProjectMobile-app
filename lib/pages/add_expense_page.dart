@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:project_mobile/models/budget.dart';
 import 'package:project_mobile/services/api_service.dart';
 
 class AddExpensePage extends StatefulWidget {
@@ -15,6 +16,10 @@ class _AddExpensePageState extends State<AddExpensePage> {
   final NumberFormat _formatter = NumberFormat.decimalPattern();
   String? _selectedCategory;
 
+  List<Budget> _allBudgets = [];
+  bool _isLoadingBudgets = true;
+  Budget? _triggeredBudget;
+
   final List<String> _categories = [
     'Transportation',
     'Shopping',
@@ -23,6 +28,97 @@ class _AddExpensePageState extends State<AddExpensePage> {
     'Groceries',
     'Others',
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchBudgets();
+  }
+
+  Future<void> _fetchBudgets() async {
+    try {
+      final List<dynamic> budgetData = await ApiService.getBudgets();
+      if (mounted) {
+        setState(() {
+          _allBudgets = budgetData.map((json) => Budget.fromJson(json)).toList();
+          _isLoadingBudgets = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isLoadingBudgets = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to load budget data: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  void _checkBudgetAlert(String? selectedCategoryName) {
+    setState(() {
+      _triggeredBudget = null;
+    });
+
+    if (selectedCategoryName == null) return;
+
+    final categoryId = (_categories.indexOf(selectedCategoryName) + 1).toString();
+    final now = DateTime.now();
+
+    try {
+      final budgetForMonth = _allBudgets.firstWhere(
+        (b) =>
+          b.categoryId == int.tryParse(categoryId) &&
+          b.startDate.month == now.month &&
+          b.startDate.year == now.year,
+      );
+
+      if (budgetForMonth.alertValue != null && budgetForMonth.totalBudget > 0) {
+        double usagePercentage = (budgetForMonth.usedAmount / budgetForMonth.totalBudget) * 100;
+        if (usagePercentage >= budgetForMonth.alertValue!) {
+          setState(() {
+            _triggeredBudget = budgetForMonth;
+          });
+        }
+      }
+    } catch (e) {
+      debugPrint('No budget found for category ID $categoryId in the current month.');
+    }
+  }
+
+  Widget _buildBudgetWarning() {
+    if (_triggeredBudget == null) {
+      return SizedBox.shrink();
+    }
+    return Container(
+      margin: EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.orange.withAlpha(15),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.orange, width: 1),
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.warning, color: Colors.orange[800], size: 28),
+          SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              "You've reached ${_triggeredBudget!.alertValue}% usage of budget for this category!",
+              style: TextStyle(
+                color: Colors.orange[900],
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -145,13 +241,17 @@ class _AddExpensePageState extends State<AddExpensePage> {
                       )
                     ),
                     value: _selectedCategory,
+                    hint: _isLoadingBudgets ? Text('Loading budgets...') : Text('Select Category'),
                     items: _categories
                       .map((cat) =>
                         DropdownMenuItem(value: cat, child: Text(cat)))
                       .toList(),
-                    onChanged: (value) => setState(() {
-                      _selectedCategory = value;
-                    }),
+                    onChanged: _isLoadingBudgets ? null : (value) {
+                      setState(() {
+                        _selectedCategory = value;
+                      });
+                      _checkBudgetAlert(value);
+                    }
                   ),
 
                   SizedBox(height: 16),
@@ -185,6 +285,10 @@ class _AddExpensePageState extends State<AddExpensePage> {
                       ),
                     ),
                   ),
+
+                  SizedBox(height: 16),
+
+                  _buildBudgetWarning(),
 
                   Spacer(),
 
