@@ -37,10 +37,6 @@ class _CreateBudgetPageState extends State<CreateBudgetPage> {
   Widget build(BuildContext context) {
     bool amountEdited = false;
 
-    final isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
-    final initialHeight = MediaQuery.of(context).size.height * 0.28;
-    double topSpaceHeight = _toggleActive ? initialHeight : initialHeight + 37;
-
     return Scaffold(
       backgroundColor: Colors.blue,
 
@@ -50,11 +46,7 @@ class _CreateBudgetPageState extends State<CreateBudgetPage> {
 
           _appbar(),
 
-          AnimatedContainer(
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-            height: isKeyboardVisible ? topSpaceHeight - 240 : topSpaceHeight,
-          ),
+          SizedBox(height: 32),
 
           Padding(
             padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
@@ -233,7 +225,7 @@ class _CreateBudgetPageState extends State<CreateBudgetPage> {
                       ),
                     ),
 
-                  SizedBox(height: 16),
+                  Spacer(),
 
                   SizedBox(
                     width: double.infinity,
