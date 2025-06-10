@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:project_mobile/models/transaction.dart';
 
 class ExpenseLegend extends StatelessWidget {
@@ -86,7 +87,7 @@ class ExpenseLegend extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '- Rp $amount',
+                  '- Rp ${NumberFormat.decimalPattern().format(amount)}',
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,

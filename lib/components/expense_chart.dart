@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:intl/intl.dart';
 import 'package:project_mobile/models/transaction.dart';
 
 class ExpenseChart extends StatelessWidget {
@@ -64,7 +65,7 @@ class ExpenseChart extends StatelessWidget {
               children: [
                 // Total Amount
                 Text(
-                  'Rp $totalExpenses',
+                  'Rp ${NumberFormat.decimalPattern().format(totalExpenses)}',
                   style: const TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,

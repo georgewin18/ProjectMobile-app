@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:intl/intl.dart';
 import 'package:project_mobile/models/transaction.dart';
 
 class IncomeChart extends StatelessWidget {
@@ -57,7 +58,7 @@ class IncomeChart extends StatelessWidget {
         children: [
           // Total Amount
           Text(
-            'Rp $totalIncome',
+            'Rp ${NumberFormat.decimalPattern().format(totalIncome)}',
             style: const TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.bold,
